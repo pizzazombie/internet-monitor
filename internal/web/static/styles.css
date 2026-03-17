@@ -1,0 +1,257 @@
+:root {
+  color-scheme: light;
+  --bg: #f5efe3;
+  --panel: rgba(255, 250, 244, 0.82);
+  --panel-strong: #fffaf2;
+  --border: rgba(85, 68, 34, 0.12);
+  --text: #24190b;
+  --muted: #695841;
+  --up: #20805f;
+  --degraded: #c78b1e;
+  --down: #b43d2e;
+  --grid: rgba(36, 25, 11, 0.12);
+  --shadow: 0 18px 60px rgba(79, 57, 22, 0.12);
+  --font: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  background:
+    radial-gradient(circle at top left, rgba(255, 215, 117, 0.3), transparent 32%),
+    linear-gradient(180deg, #f9f2df 0%, #f3ecdf 45%, #efe5d5 100%);
+  color: var(--text);
+}
+
+.app {
+  width: min(1180px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: 32px 0 48px;
+}
+
+.hero,
+.panel,
+.stat-card,
+.status-strip {
+  backdrop-filter: blur(12px);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 1fr);
+  gap: 24px;
+  padding: 24px;
+  border-radius: 28px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin: 0 0 12px;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 0.96;
+  max-width: 10ch;
+}
+
+.lede {
+  margin-top: 18px;
+  max-width: 62ch;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+
+.preset-group,
+.range-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 1px solid var(--border);
+  background: var(--panel-strong);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button.active,
+button.primary {
+  background: var(--text);
+  color: #fff9f0;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+input {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  background: rgba(255, 252, 246, 0.95);
+  color: var(--text);
+}
+
+.status-strip {
+  margin-top: 20px;
+  border-radius: 18px;
+  padding: 14px 18px;
+  font-weight: 600;
+}
+
+.status-strip.up {
+  color: var(--up);
+}
+
+.status-strip.degraded {
+  color: var(--degraded);
+}
+
+.status-strip.down {
+  color: var(--down);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.stat-card {
+  border-radius: 24px;
+  padding: 18px;
+}
+
+.stat-card span {
+  display: block;
+  color: var(--muted);
+  margin-bottom: 10px;
+  font-size: 0.92rem;
+}
+
+.stat-card strong {
+  font-size: clamp(1.2rem, 3vw, 2.2rem);
+}
+
+.panel {
+  border-radius: 28px;
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.panel-header p {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+canvas {
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+  background: rgba(255, 252, 246, 0.68);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+}
+
+@media (max-width: 920px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .app {
+    width: min(100vw - 16px, 100%);
+    padding-top: 16px;
+  }
+
+  .hero,
+  .panel,
+  .stat-card,
+  .status-strip {
+    border-radius: 20px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: start;
+  }
+}

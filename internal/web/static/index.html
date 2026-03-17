@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Internet Monitor</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Local uptime monitor</p>
+          <h1>Internet status at a glance</h1>
+          <p class="lede">
+            Track outages, degraded periods, latency and optional speed checks on
+            a lightweight local service.
+          </p>
+        </div>
+        <div class="controls">
+          <div class="preset-group">
+            <button data-hours="1">1h</button>
+            <button data-hours="6">6h</button>
+            <button data-hours="24" class="active">24h</button>
+            <button data-hours="168">7d</button>
+            <button data-hours="720">30d</button>
+          </div>
+          <div class="range-group">
+            <label>
+              From
+              <input id="from" type="datetime-local" />
+            </label>
+            <label>
+              To
+              <input id="to" type="datetime-local" />
+            </label>
+            <button id="apply-range" class="primary">Apply</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="status-strip" class="status-strip">Loading…</section>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <span>Uptime</span>
+          <strong id="uptime">-</strong>
+        </article>
+        <article class="stat-card">
+          <span>Outages</span>
+          <strong id="outages">-</strong>
+        </article>
+        <article class="stat-card">
+          <span>Downtime</span>
+          <strong id="downtime">-</strong>
+        </article>
+        <article class="stat-card">
+          <span>Avg latency</span>
+          <strong id="latency">-</strong>
+        </article>
+        <article class="stat-card">
+          <span>Last status</span>
+          <strong id="last-status">-</strong>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>Connectivity timeline</h2>
+          <p>Green means OK, amber means degraded, red means down.</p>
+        </div>
+        <canvas id="timeline-chart" height="120"></canvas>
+        <div id="timeline-legend" class="legend"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>Latency</h2>
+          <p>Response time of the first successful probe.</p>
+        </div>
+        <canvas id="latency-chart" height="220"></canvas>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>Speed samples</h2>
+          <p>Optional low-frequency checks. Empty when disabled.</p>
+        </div>
+        <canvas id="speed-chart" height="220"></canvas>
+      </section>
+    </main>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

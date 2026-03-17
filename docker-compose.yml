@@ -1,0 +1,22 @@
+services:
+  internet-monitor:
+    build: .
+    container_name: internet-monitor
+    restart: unless-stopped
+    ports:
+      - "5555:5555"
+    environment:
+      IM_LISTEN_ADDR: ":5555"
+      IM_DATA_DIR: "/data"
+      IM_CHECK_INTERVAL: "15s"
+      IM_REQUEST_TIMEOUT: "3s"
+      IM_RETENTION_DAYS: "180"
+      IM_ENABLE_SPEED_TEST: "false"
+      IM_SPEED_TEST_INTERVAL: "6h"
+      IM_SPEED_TEST_BYTES: "262144"
+      IM_TCP_PROBE_ADDRESS: "1.1.1.1:443"
+      IM_HTTP_PROBE_URL: "https://cp.cloudflare.com/generate_204"
+      IM_DNS_PROBE_HOST: "example.com"
+      IM_LAN_PROBE_ADDRESS: "192.168.0.1:80"
+    volumes:
+      - ./data:/data
