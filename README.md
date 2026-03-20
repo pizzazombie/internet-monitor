@@ -36,6 +36,8 @@ Each result is appended to daily `.ndjson` files under `/data`, and the built-in
 
 Optional speed checks are disabled by default. If you turn them on, they run rarely and download only a small payload, so they should not meaningfully affect normal usage unless you choose an aggressive schedule.
 
+<img width="981" height="1238" alt="image" src="https://github.com/user-attachments/assets/8fa8c283-1ff9-46dc-baf3-57f943b6391d" />
+
 ## LAN vs ISP failures
 
 From inside a container, you cannot perfectly diagnose whether the exact problem was:
