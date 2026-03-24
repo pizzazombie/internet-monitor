@@ -208,12 +208,36 @@ canvas {
   margin-top: 12px;
   font-size: 0.9rem;
   color: var(--muted);
+  align-items: center;
 }
 
-.legend span {
+.legend button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  padding: 9px 14px;
+  background: rgba(255, 252, 246, 0.7);
+}
+
+.legend button.active {
+  color: #fff9f0;
+  border-color: transparent;
+}
+
+.legend button.active[data-status="up"] {
+  background: var(--up);
+}
+
+.legend button.active[data-status="degraded"] {
+  background: var(--degraded);
+}
+
+.legend button.active[data-status="down"] {
+  background: var(--down);
+}
+
+.legend button.reset {
+  padding-inline: 16px;
 }
 
 .legend i {

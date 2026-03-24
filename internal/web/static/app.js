@@ -6,9 +6,12 @@ const palette = {
   text: "#24190b",
 };
 
+const timelineStatuses = ["up", "degraded", "down"];
+
 const state = {
   hours: 24,
   timer: null,
+  timelineFilter: null,
 };
 
 function toLocalInputValue(date) {
@@ -87,10 +90,28 @@ function render(payload) {
     strip.textContent = `Last check ${formatTimestamp(summary.last_checked_at)}: ${summary.last_status}.`;
   }
 
+  const filteredTimeline = filterTimeline(timeline);
   renderLegend(timeline);
-  drawTimeline(document.getElementById("timeline-chart"), timeline, summary.from, summary.to);
+  drawTimeline(
+    document.getElementById("timeline-chart"),
+    filteredTimeline,
+    summary.from,
+    summary.to,
+    activeTimelineLabel(),
+  );
   drawLineChart(document.getElementById("latency-chart"), latency, "ms");
   drawLineChart(document.getElementById("speed-chart"), speed, "Mbps");
+}
+
+function filterTimeline(timeline) {
+  if (!state.timelineFilter) {
+    return timeline;
+  }
+  return timeline.filter((item) => item.status === state.timelineFilter);
+}
+
+function activeTimelineLabel() {
+  return state.timelineFilter ? `No ${state.timelineFilter} segments in range` : "No timeline data";
 }
 
 function renderLegend(timeline) {
@@ -100,12 +121,35 @@ function renderLegend(timeline) {
   });
 
   const legend = document.getElementById("timeline-legend");
-  legend.innerHTML = ["up", "degraded", "down"]
+  legend.innerHTML = timelineStatuses
     .map(
       (key) =>
-        `<span><i style="background:${palette[key]}"></i>${key}: ${counts[key] ?? 0} segments</span>`,
+        `<button type="button" data-status="${key}" class="${
+          state.timelineFilter === key ? "active" : ""
+        }"><i style="background:${palette[key]}"></i>${key}: ${counts[key] ?? 0} segments</button>`,
+    )
+    .concat(
+      `<button type="button" class="reset ${
+        state.timelineFilter ? "" : "active"
+      }" data-reset-timeline="true">show all</button>`,
     )
     .join("");
+
+  legend.querySelectorAll("[data-status]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const nextFilter = button.dataset.status;
+      state.timelineFilter = state.timelineFilter === nextFilter ? null : nextFilter;
+      await loadOverview();
+    });
+  });
+
+  const resetButton = legend.querySelector("[data-reset-timeline]");
+  if (resetButton) {
+    resetButton.addEventListener("click", async () => {
+      state.timelineFilter = null;
+      await loadOverview();
+    });
+  }
 }
 
 function scaleCanvas(canvas) {
@@ -119,14 +163,14 @@ function scaleCanvas(canvas) {
   return { ctx, width, height };
 }
 
-function drawTimeline(canvas, timeline, from, to) {
+function drawTimeline(canvas, timeline, from, to, emptyLabel) {
   const { ctx, width, height } = scaleCanvas(canvas);
   ctx.clearRect(0, 0, width, height);
   ctx.fillStyle = "rgba(36, 25, 11, 0.05)";
   ctx.fillRect(0, 0, width, height);
 
   if (!timeline.length) {
-    drawEmpty(ctx, width, height, "No timeline data");
+    drawEmpty(ctx, width, height, emptyLabel);
     return;
   }
 
